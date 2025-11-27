@@ -1,12 +1,13 @@
 package com.app.examen2025.presentation.screens.home
 
+import com.app.examen2025.domain.model.Sudoku
+
 // Estado completo de la pantalla Home de Horóscopos
 data class HomeUiState(
-    // Lista de signos zodiacales que se mostrarán en la pantalla principal
-    // val signs: List<String> = emptyList(),
-    // Para mostrar un indicador de carga (por si en algún momento quieres hacer algo async)
+    val selectedSize: Int = 4,
+    val selectedDifficulty: String = "easy",
+    // Para mostrar un indicador de carga
     val isLoading: Boolean = false,
-    // Mensaje de error si algo falla (por ahora casi no se usa,
-    // pero mantenemos el patrón del laboratorio)
+    // Mensaje de error si algo falla
     val error: String? = null,
 )

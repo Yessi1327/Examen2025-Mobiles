@@ -24,9 +24,9 @@ class SudokuRepositoryImpl
 
             val (width, height) =
                 when (size) {
-                    4 -> 4 to 4
-                    9 -> 9 to 9
-                    else -> 9 to 9 // default a 9x9 por si acaso
+                    4 -> 2 to 2
+                    9 -> 3 to 3
+                    else -> 3 to 3 // default a 9x9 por si acaso
                 }
 
             return try {

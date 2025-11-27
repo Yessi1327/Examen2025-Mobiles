@@ -8,9 +8,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.app.examen2025.domain.model.Horoscope
 import com.app.examen2025.presentation.screens.home.HomeScreen
-import com.app.examen2025.presentation.screens.horoscope.HoroscopeDetailScreen
+import com.app.examen2025.presentation.screens.sudoku.SudokuDetailScreen
 
 // Sección 1 Define todas las rutas de navegación en un solo lugar
 
@@ -22,22 +21,18 @@ sealed class Screen(
     // Este objeto define una ruta para la pantalla de inicio
     object Home : Screen("home")
 
-    /*// Est define una ruta para la pantalla de detalles de algp
-    // Remplazando el argumento con {remplazaId} para datos dinamicos
-    object Detail : Screen("horoscope/{sign}") {
-        // Función auxiliar que crea la ruta completa reemplazando el valor {remplazaId}
-        // con el ID real del Remplazable (por ejemplo, "remplaza/3").
-        fun createRoute(sign: String) = "horoscope/$sign"
+    object Detail : Screen("sudoku/{size}/{difficulty}") {
+        fun createRoute(
+            size: Int,
+            difficulty: String,
+        ): String = "sudoku/$size/$difficulty"
     }
-*/
-    // Si quieres meter mas pantallas es aqui
 }
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun HoroscopeNavGraph(
+fun SudokuNavGraph(
     modifier: Modifier = Modifier,
-    // Crea (o recibe) el controlador de navegación
     navController: NavHostController = rememberNavController(),
 ) {
     NavHost(
@@ -55,27 +50,30 @@ fun HoroscopeNavGraph(
             // Llama al composable de la pantalla Home: HomeScreen
             HomeScreen(
                 // Parámetro lambda que se ejecuta cuando el usuario toca un algo en la lista.
-                onSignClick = { sign ->
-                    // Navega a la pantalla de detalle con el ID del remplaza
-                    // reemplazando {remplazaId} con el valor real (por ejemplo, "remplaza/1").
-                    navController.navigate(Screen.Detail.createRoute(sign))
+                onStartClick = { size, difficulty ->
+                    navController.navigate(
+                        Screen.Detail.createRoute(size, difficulty),
+                    )
                 },
             )
         }
 
-        /*// Segunda pantalla: Detalle o la que aplique
         composable(
             route = Screen.Detail.route,
-            arguments = listOf(navArgument("sign") { type = NavType.StringType }),
+            arguments =
+                listOf(
+                    navArgument("size") { type = NavType.IntType },
+                    navArgument("difficulty") { type = NavType.StringType },
+                ),
         ) { backStackEntry ->
-            val sign = backStackEntry.arguments?.getString("sign") ?: "aries"
+            val size = backStackEntry.arguments?.getInt("size") ?: 9
+            val difficulty = backStackEntry.arguments?.getString("difficulty") ?: "medium"
 
-            HoroscopeDetailScreen(
-                sign = sign,
-                onBackClick = {
-                    navController.popBackStack()
-                },
+            SudokuDetailScreen(
+                size = size,
+                difficulty = difficulty,
+                onBackClick = { navController.popBackStack() },
             )
-        }*/
+        }
     }
 }
