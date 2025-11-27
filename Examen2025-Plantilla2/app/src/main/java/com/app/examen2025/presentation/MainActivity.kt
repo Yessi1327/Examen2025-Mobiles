@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
                 // Scaffold crea una estructura básica para la pantalla.
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     // El gráfico de navegación que se encarga de mostrar las pantallas (Home, Detail, etc.)
-                    //HoroscopeNavGraph()
+                    // HoroscopeNavGraph()
                 }
             }
         }

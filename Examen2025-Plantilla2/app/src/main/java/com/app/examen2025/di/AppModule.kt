@@ -1,15 +1,14 @@
 package com.app.examen2025.di
 
 import android.content.Context
-import com.app.examen2025.data.local.preferences.HoroscopePreferences
-import com.app.examen2025.data.remote.api.HoroscopeApi
-import com.app.examen2025.data.repository.HoroscopeRepositoryImpl
-import com.app.examen2025.domain.repository.HoroscopeRepository
+import com.app.examen2025.data.remote.api.SudokuApi
+import com.app.examen2025.data.repository.SudokuRepositoryImpl
+import com.app.examen2025.domain.repository.SudokuRepository
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-//import dagger.hilt.android.qualifiers.ActivityContext
+// import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
@@ -28,7 +27,7 @@ object AppModule {
             // Crea un constructor para configurar Retrofit.
             .Builder()
             // URL base de la API.
-            .baseUrl()
+            .baseUrl("https://api.api-ninjas.com/v1/")
             // Usa Gson para convertir JSON a objetos
             .addConverterFactory(GsonConverterFactory.create())
             // Finalemente, Construye la instancia de Retrofit
@@ -39,37 +38,32 @@ object AppModule {
     @Singleton
     fun provideGson(): Gson = Gson()
 
-    // HoroscopeApi
     // Solo existira una instancia compartida en toda la app
     @Provides
     @Singleton
-    fun provideHoroscopeApi(
-        retrofit: Retrofit,
-    ): HoroscopeApi = retrofit.create(HoroscopeApi::class.java)
+    fun provideSudokuApi(retrofit: Retrofit): SudokuApi = retrofit.create(SudokuApi::class.java)
 
     // HoroscopePreferences
-    @Provides
-    @Singleton
-    fun provideHoroscopePreferences(
-        @ApplicationContext context: Context,
-        gson: Gson,
-    ): HoroscopePreferences = HoroscopePreferences(context, gson)
-
-    // API key de api-ninjas
     /*@Provides
     @Singleton
-    @Named("horoscopeApiKey")
-    fun provideHoroscopeApiKey(): String = "HoV0AQydwZ8Gh4PSq4lKHA==gD3b6CcYBMu8aYEy" // SUSTITÚYELA
-    */
+    fun provideSudokuPreferences(
+        @ApplicationContext context: Context,
+        gson: Gson,
+    ): SudokuPreferences = SudokuPreferences(context, gson)
+*/
+    // API key de api-ninjas
+    @Provides
+    @Singleton
+    @Named("sudokuApiKey")
+    fun provideSudokuApiKey(): String = "wLVPN1zV08lJYF7uXqgyPw==zVwp6TlVcAO1NLUf" // SUSTITÚYELA
 
-    // HoroscopeRepository
     // Retorna una implementación concreta del repositorio, usando la API
     @Provides
     @Singleton
-    fun provideHoroscopeRepository(
-        api: HoroscopeApi,
-        preferences: HoroscopePreferences,
-        //@Named("horoscopeApiKey") apiKey: String,
-    ): HoroscopeRepository =
-        HoroscopeRepositoryImpl(api, preferences, apiKey)
+    fun provideSudokuRepository(
+        api: SudokuApi,
+        // preferences: SudokuPreferences,
+        @Named("sudokuApiKey") apiKey: String,
+    ): SudokuRepository =
+        SudokuRepositoryImpl(api, /*preferences,*/ apiKey)
 }
