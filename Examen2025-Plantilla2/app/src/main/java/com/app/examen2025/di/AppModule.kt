@@ -1,6 +1,7 @@
 package com.app.examen2025.di
 
 import android.content.Context
+import com.app.examen2025.data.local.preferences.SudokuPreferences
 import com.app.examen2025.data.remote.api.SudokuApi
 import com.app.examen2025.data.repository.SudokuRepositoryImpl
 import com.app.examen2025.domain.repository.SudokuRepository
@@ -43,14 +44,14 @@ object AppModule {
     @Singleton
     fun provideSudokuApi(retrofit: Retrofit): SudokuApi = retrofit.create(SudokuApi::class.java)
 
-    // HoroscopePreferences
-    /*@Provides
+    // SudokuPreferences
+    @Provides
     @Singleton
     fun provideSudokuPreferences(
         @ApplicationContext context: Context,
         gson: Gson,
     ): SudokuPreferences = SudokuPreferences(context, gson)
-*/
+
     // API key de api-ninjas
     @Provides
     @Singleton
@@ -62,8 +63,7 @@ object AppModule {
     @Singleton
     fun provideSudokuRepository(
         api: SudokuApi,
-        // preferences: SudokuPreferences,
+        preferences: SudokuPreferences,
         @Named("sudokuApiKey") apiKey: String,
-    ): SudokuRepository =
-        SudokuRepositoryImpl(api, /*preferences,*/ apiKey)
+    ): SudokuRepository = SudokuRepositoryImpl(api, preferences, apiKey)
 }
